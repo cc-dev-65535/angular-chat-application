@@ -4,30 +4,40 @@ module.exports = (io) => {
 
   const messageHandler = function(msg) {
     const socket = this;
-    let temp = socket.rooms.values();
+    const temp = socket.rooms.values();
+    //console.log(socket.rooms);
     temp.next();
-    let room = temp.next().value;
+    const room = temp.next().value;
+    //console.log(room + '!!');
     db.sendMessage(io, socket, room, msg);
   }
 
   const joinHandler = function(room) {
     const socket = this;
+    //const temp = socket.rooms.values();
+    for (let item of socket.rooms) {
+      if (item != socket.id) {
+        socket.leave(item);
+      }
+    }
     socket.join(room);
-    console.log(`${socket.id} joined ${room}`);
+    console.log(socket.rooms);
+    console.log(room + "left");
+    //console.log(`${socket.id} joined ${room}`);
     db.getRoomMessages(io, socket, room);
   }
 
   const nameHandler = function(name) {
     const socket = this;
     db.setUsername(socket.id, name);
-    console.log(`${socket.id} set username to ${name}`);
   }
 
   const disconnectHandler = function() {
     const socket = this;
+    db.removeUsername(socket.id);
   }
 
-  return  {
+  return {
     messageHandler,
     joinHandler,
     nameHandler,

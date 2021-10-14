@@ -1,26 +1,17 @@
 extends layout
 
 block content
-  // h1= title
-  // p Welcome to #{title}
-  // p chat website!
-  div(class="list-group" id="rooms")
-    a(href="#" class="list-group-item" id="item1") #animals
-    a(href="#" class="list-group-item" id="item2") #random
-  br
+  ul(id="roomsList")
+    li: a(href="") #animals
+    li: a(href="") #funny
+    li: a(href="") #local
+    li: a(href="") #random
   div(id="chatDisplay")
-  br
   form(id="chatInput")
     textarea(id="inputBox" rows="5" cols="60")
-    br
-    button(id="sendOne") Send
-  br
-  ul(class="list-group")
-    li(class="list-group-item") An item
-    li(class="list-group-item") A second item
-  br
-  h1 Username
-  form(id="nameInput" id="userlist")
-    input(id="nameInputBox")
-    br
-    button(id="sendTwo") Send
+    button ➥
+  form(id="nameInput")
+    label Handle Name:
+    input(id="nameInputBox" type="text")
+    button Send
+  label(id="nameLabel")
