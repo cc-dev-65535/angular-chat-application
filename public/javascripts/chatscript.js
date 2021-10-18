@@ -5,7 +5,6 @@ init();
 addRoomLinks();
 
 socket.on('message', (msg) => {
-  //console.log("here!");
   const msgNode = document.createElement('div');
   msgNode.textContent = msg;
   document.querySelector('#chatDisplay').appendChild(msgNode);
@@ -22,7 +21,7 @@ document.querySelector("#inputBox").addEventListener("keydown", event => {
     sendMessage();
     event.preventDefault();
   }
-})
+});
 
 document.querySelector('#nameInput').addEventListener("submit", (event) => {
   let inputBox = document.querySelector('#nameInputBox');
@@ -35,7 +34,7 @@ document.querySelector('#nameInput').addEventListener("submit", (event) => {
 });
 
 function addRoomLinks() {
-  let list = document.querySelectorAll('#roomsList a');
+  let list = document.querySelectorAll('#roomsList button');
   for (let item of list) {
     item.addEventListener("click", (event) => {
       let room = event.target;
@@ -46,7 +45,7 @@ function addRoomLinks() {
       currentRoom = item.textContent;
       let node = document.querySelector(`${item.id}`);
       node.textContent = node.textContent + "!";
-*/
+      */
       clearChatDisplay();
       event.preventDefault();
     });
@@ -71,8 +70,8 @@ function setNameLabel(name) {
 }
 
 function init() {
-  socket.emit('set name', `anon`);
-  setNameLabel("anon")
+  socket.emit('set name', `no_name`);
+  setNameLabel("no_name")
   socket.emit('join room', "#random");
   /*
   currentRoom = "#roomFour"

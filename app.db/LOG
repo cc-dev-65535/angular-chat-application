@@ -1,1 +1,5 @@
-2021/10/14-04:12:21.564 2a64 Delete type=3 #1
+2021/10/16-15:05:08.788 2d9c Recovering log #47
+2021/10/16-15:05:08.789 2d9c Level-0 table #49: started
+2021/10/16-15:05:08.797 2d9c Level-0 table #49: 2080 bytes OK
+2021/10/16-15:05:08.813 2d9c Delete type=0 #47
+2021/10/16-15:05:08.813 2d9c Delete type=3 #45

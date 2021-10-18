@@ -33,7 +33,7 @@ const onConnection = (socket) => {
   socket.on('join room', joinHandler);
   socket.on('set name', nameHandler);
   socket.on('disconnect', disconnectHandler);
-}
+};
 
 io.on('connection', onConnection);
 
