@@ -99,3 +99,7 @@ button:hover {
   margin: 1em 0.5em;
   color: green;
 }
+
+.highlight {
+  background-color: #333;
+}

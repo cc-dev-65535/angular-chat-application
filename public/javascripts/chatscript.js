@@ -1,5 +1,5 @@
 const socket = io();
-//let currentRoom;
+let currentRoom;
 
 init();
 addRoomLinks();
@@ -39,13 +39,13 @@ function addRoomLinks() {
     item.addEventListener("click", (event) => {
       let room = event.target;
       socket.emit("join room", room.textContent);
-      /*
+
       let prevNode = document.querySelector(currentRoom);
-      prevNode.textContent = prevNode.textContent + "!";
-      currentRoom = item.textContent;
-      let node = document.querySelector(`${item.id}`);
-      node.textContent = node.textContent + "!";
-      */
+      prevNode.setAttribute('class', '');
+      currentRoom = "#" + item.id;
+      //let node = document.querySelector(currentRoom);
+      item.setAttribute('class', 'highlight');
+
       clearChatDisplay();
       event.preventDefault();
     });
@@ -73,9 +73,8 @@ function init() {
   socket.emit('set name', `no_name`);
   setNameLabel("no_name")
   socket.emit('join room', "#random");
-  /*
-  currentRoom = "#roomFour"
-  let node = document.querySelector(currentroom);
-  node.textContent = node.textContent + "!";
-  */
+
+  currentRoom = "#roomFour";
+  let node = document.querySelector(currentRoom);
+  node.setAttribute('class', 'highlight');
 }
