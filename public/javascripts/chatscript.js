@@ -7,8 +7,9 @@ addRoomLinks();
 socket.on('message', (msg) => {
   const msgNode = document.createElement('div');
   msgNode.textContent = msg;
-  document.querySelector('#chatDisplay').appendChild(msgNode);
-  msgNode.scrollIntoView(false);
+  let displayNode = document.querySelector('#chatDisplay');
+  displayNode.appendChild(msgNode);
+  displayNode.scrollTop = displayNode.scrollHeight;
 });
 
 document.querySelector('#chatInput').addEventListener("submit", (event) => {
