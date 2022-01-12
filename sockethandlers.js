@@ -20,14 +20,6 @@ module.exports = (io) => {
 
   const joinHandler = function(room) {
     const socket = this;
-    //const temp = socket.rooms.values();
-    /*
-    for (let item of socket.rooms) {
-      if (item != socket.id) {
-        socket.leave(item);
-      }
-    }
-    */
     leavePreviousRoom(socket);
     socket.join(room);
     db.getRoomMessages(io, socket, room);

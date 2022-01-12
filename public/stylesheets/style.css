@@ -15,7 +15,7 @@ button {
   border: 1px solid #ccc;
   background-color: #999;
   border-radius: 0.5em;
-  padding: 1em;
+  padding: 15px;
   font-weight: bold;
   color: #fff;
   display: block;
@@ -61,8 +61,31 @@ button:hover {
 }
 
 #chatInput button {
-  margin-left: 0.5em;
-  align-self: flex-end;
+  margin-left: 3px;
+}
+
+#emojiIcon {
+  margin-left: 3px;
+}
+
+#emojiIcon:hover {
+  cursor: pointer;
+}
+
+#emojiContainer {
+  position: relative;
+}
+
+#emojiPicker {
+  position: absolute;
+  top: -370px;
+  left: 35px;
+}
+
+#controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 #inputBox {
@@ -109,4 +132,8 @@ button:hover {
 
 .highlight {
   background-color: #333;
+}
+
+.hidden {
+  display: none;
 }

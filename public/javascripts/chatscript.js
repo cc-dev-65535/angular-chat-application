@@ -1,9 +1,17 @@
+const io = require('../socket.io/socket.io');
+const insertTextAtCursor = (...args) => import('insert-text-at-cursor').then(({default: insertTextAtCursor}) => insertTextAtCursor(...args));
+/*let insertTextAtCursor;
+(async () => {
+    insertTextAtCursor = await import('insert-text-at-cursor');
+})();*/
 const socket = io();
 let currentRoom;
+const roomsEnum = {"#roomOne": "#animals",
+                    "#roomTwo": "#funny",
+                    "#roomThree": "#food",
+                    "#roomFour": "#random"};
 
-init();
-addRoomLinks();
-
+// WebSocket message handler
 socket.on('message', (msg) => {
   const msgNode = document.createElement('div');
   msgNode.textContent = msg;
@@ -12,18 +20,45 @@ socket.on('message', (msg) => {
   displayNode.scrollTop = displayNode.scrollHeight;
 });
 
+// Initialization
+init();
+
+/* Setup emoji picker */
+document.querySelector('#emojiIcon').addEventListener("click", (event) => {
+  const emojiPickerNode = document.querySelector('#emojiPicker');
+  if (emojiPickerNode.getAttribute("class") == "hidden") {
+    emojiPickerNode.setAttribute("class", "");
+  } else {
+    emojiPickerNode.setAttribute("class", "hidden");
+  }
+  return false;
+});
+
+/*
+window.addEventListener("click", (event) => {
+  const emojiPickerNode = document.querySelector('#emojiPicker');
+  emojiPickerNode.setAttribute("class", "hidden");
+});
+*/
+
+document.querySelector('#emojiPicker').addEventListener('emoji-click', event => {
+    insertTextAtCursor(document.querySelector('#inputBox'), event.detail.unicode);
+});
+
+/* Message submission listeners */
 document.querySelector('#chatInput').addEventListener("submit", (event) => {
   sendMessage();
   event.preventDefault();
 });
 
-document.querySelector("#inputBox").addEventListener("keydown", event => {
+document.querySelector("#inputBox").addEventListener("keydown", (event) => {
   if (event.key == "Enter") {
     sendMessage();
     event.preventDefault();
   }
 });
 
+// Handler for setting handle name
 document.querySelector('#nameInput').addEventListener("submit", (event) => {
   let inputBox = document.querySelector('#nameInputBox');
   if(inputBox.value != "") {
@@ -34,25 +69,7 @@ document.querySelector('#nameInput').addEventListener("submit", (event) => {
   event.preventDefault();
 });
 
-function addRoomLinks() {
-  let list = document.querySelectorAll('#roomsList button');
-  for (let item of list) {
-    item.addEventListener("click", (event) => {
-      let room = event.target;
-      socket.emit("join room", room.textContent);
-
-      let prevNode = document.querySelector(currentRoom);
-      prevNode.setAttribute('class', '');
-      currentRoom = "#" + item.id;
-      //let node = document.querySelector(currentRoom);
-      item.setAttribute('class', 'highlight');
-
-      clearChatDisplay();
-      event.preventDefault();
-    });
-  }
-}
-
+// Message submission handler
 function sendMessage() {
   const inputBox = document.querySelector('#inputBox');
   socket.emit("message", inputBox.value);
@@ -70,12 +87,33 @@ function setNameLabel(name) {
   document.querySelector('#nameLabel').textContent = `Current Handle Name: ${name}`;
 }
 
-function init() {
-  socket.emit('set name', `no_name`);
-  setNameLabel("no_name")
-  socket.emit('join room', "#random");
+// Set initial handle name and room and add room links
+async function init() {
+  await socket.emit('set name', 'no name');
+  setNameLabel("no name")
 
+  await socket.emit('join room', "#random");
   currentRoom = "#roomFour";
-  let node = document.querySelector(currentRoom);
+  const node = document.querySelector(currentRoom);
   node.setAttribute('class', 'highlight');
+  addRoomLinks();
+}
+
+function addRoomLinks() {
+  let list = document.querySelectorAll('#roomsList button');
+  for (let item of list) {
+    item.addEventListener("click", (event) => {
+      clearChatDisplay();
+      let room = event.target;
+      socket.emit("join room", room.textContent);
+
+      let prevNode = document.querySelector(currentRoom);
+      prevNode.setAttribute('class', '');
+      currentRoom = "#" + item.id;
+      item.setAttribute('class', 'highlight');
+
+      event.preventDefault();
+      return false;
+    });
+  }
 }

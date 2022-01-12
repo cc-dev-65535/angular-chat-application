@@ -25,20 +25,9 @@ function removeUsername(id) {
 /* Find socket username from databse and send message to all other sockets in specified room*/
 function sendMessage(io, socket, room, msg) {
   db.get(socket.id, (err, result) => {
-    if (err) throw err;
-    const username = JSON.parse(result).name;
-    const sendMsg = username + ': ' + msg;
-    saveMessage(room, sendMsg);
-    io.to(room).emit('message', sendMsg);
-  });
-}
-
-/* Persist message in database */
-function saveMessage(room, msg) {
-  db.get(room, (err, result) => {
-    // CASE: this socket is the first socket in the room
+    // CASE: client socket id not in database yet
     if (err && err.notFound) {
-      addMessage(room, msg, null);
+      console.log("probably concurrency error");
       return;
     }
     // CASE: normal error
@@ -46,38 +35,56 @@ function saveMessage(room, msg) {
       throw err;
     }
 
-    addMessage(room, msg, result);
+    const username = JSON.parse(result).name;
+    const sendMsg = username + ': ' + msg;
+    saveMessage(io, room, sendMsg);
   });
 }
 
-function addMessage(room, msg, history) {
-  let value;
-  // CASE: no prior messages saved to room yet
-  if (history == null) {
-    value = JSON.stringify({
-      messages: [msg]
-    });
-    db.put(room, value, err => {
-      if (err) throw err;
-    });
-  }
-  // CASE: normal case
-  else {
-    let msgArray = JSON.parse(history).messages;
+/* Persist message in database */
+function saveMessage(io, room, msg) {
+  db.get(room, (err, result) => {
+    // CASE: this socket is the first socket in the room
+    if (err && err.notFound) {
+      value = JSON.stringify({
+        messages: [msg]
+      });
+      db.put(room, value, err => {
+        if (err) throw err;
+        io.to(room).emit('message', msg);
+      });
+      return;
+    }
+    // CASE: normal error
+    if (err && !err.notFound) {
+      throw err;
+    }
+
+    let msgArray = JSON.parse(result).messages;
     msgArray.push(msg);
     value = JSON.stringify({
       messages: msgArray
     });
     db.put(room, value, err => {
       if (err) throw err;
+      io.to(room).emit('message', msg);
     });
-  }
+  });
 }
 
 /* Emit all saved room messages to client socket after a room join */
 function getRoomMessages(io, socket, room) {
   db.get(socket.id, (err, result) => {
-    if (err) throw err
+    // CASE: client socket id not in database yet
+    if (err && err.notFound) {
+      console.log("probably concurrency error");
+      return;
+    }
+    // CASE: normal error
+    if (err && !err.notFound) {
+      throw err;
+    }
+
     const username = JSON.parse(result).name;
     const joinMsg = `${username} joined ${room}`;
     sendRoomMessages(io, socket, room, joinMsg);

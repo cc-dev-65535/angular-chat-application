@@ -9,7 +9,11 @@ block content
   div(id="chatDisplay")
   form(id="chatInput")
     textarea(id="inputBox")
-    button ➥
+    div(id="controls")
+      div(id="emojiContainer")
+        i(id="emojiIcon" class="far fa-grin-alt fa-2x")
+        emoji-picker(id="emojiPicker" class="hidden")
+      button(id="returnButton") ➥
   form(id="nameInput")
     label Handle Name:
     input(id="nameInputBox" type="text")
