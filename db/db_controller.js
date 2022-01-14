@@ -34,7 +34,7 @@ async function sendMessage(io, socket, room, msg) {
     const session = await mongoose.connection.startSession();
     await session.withTransaction(async () => {
       const userDoc = await userModel.findOne({socketId: socket.id}).select('userName').session(session);
-      const sendMsg = `${userDoc.userName}: ${msg}`;
+      const sendMsg = { room: room, text: `${userDoc.userName}: ${msg}` };
       const chatDoc = await chatModel.findOne({room: room}).session(session);
       const messageObj = {
         author: userDoc.userName,
@@ -59,11 +59,13 @@ async function getRoomMessages(io, socket, room) {
       if (userDoc === null) {
         return;
       }
-      const joinMsg = `${userDoc.userName} joined ${room}`;
+      const joinMsg = { room: room, text: `${userDoc.userName} joined ${room}` };
       const chatDoc = await chatModel.findOne({room: room}).session(session);
       const msgArray = chatDoc.messages;
+      let sendMsg;
       for (let msg of msgArray) {
-        io.to(socket.id).emit('message', `${msg.author}: ${msg.text}`);
+        sendMsg = { room: room, text: `${msg.author}: ${msg.text}` };
+        io.to(socket.id).emit('message', sendMsg);
       }
       io.to(room).emit('message', joinMsg);
     });

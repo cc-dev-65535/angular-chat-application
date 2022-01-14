@@ -13,8 +13,13 @@ const roomsEnum = {"#roomOne": "#animals",
 
 // WebSocket message handler
 socket.on('message', (msg) => {
+  const room = msg.room;
+  const text = msg.text;
+  if (roomsEnum[currentRoom] !== room) {
+    return;
+  }
   const msgNode = document.createElement('div');
-  msgNode.textContent = msg;
+  msgNode.textContent = text;
   let displayNode = document.querySelector('#chatDisplay');
   displayNode.appendChild(msgNode);
   displayNode.scrollTop = displayNode.scrollHeight;
@@ -61,17 +66,19 @@ document.querySelector("#inputBox").addEventListener("keydown", (event) => {
 // Handler for setting handle name
 document.querySelector('#nameInput').addEventListener("submit", (event) => {
   let inputBox = document.querySelector('#nameInputBox');
-  socket.emit("set name", inputBox.value);
   setNameLabel(inputBox.value);
+  const name = inputBox.value;
   inputBox.value = "";
+  socket.emit("set name", name);
   event.preventDefault();
 });
 
 // Message submission handler
 function sendMessage() {
   const inputBox = document.querySelector('#inputBox');
-  socket.emit("message", inputBox.value);
+  const msg = inputBox.value;
   inputBox.value = "";
+  socket.emit("message", msg);
 }
 
 function clearChatDisplay() {
@@ -87,11 +94,8 @@ function setNameLabel(name) {
 
 // Set initial handle name and room and add room links
 function init() {
-  socket.emit('init');
-  //socket.emit('set name', 'unnamed');
   setNameLabel("unnamed");
-
-  //socket.emit('join room', "#random");
+  socket.emit('init');
   currentRoom = "#roomFour";
   const node = document.querySelector(currentRoom);
   node.setAttribute('class', 'highlight');
@@ -102,14 +106,14 @@ function addRoomLinks() {
   let list = document.querySelectorAll('#roomsList button');
   for (let item of list) {
     item.addEventListener("click", (event) => {
-      clearChatDisplay();
-      let room = event.target;
-      socket.emit("join room", room.textContent);
-
       let prevNode = document.querySelector(currentRoom);
       prevNode.setAttribute('class', '');
       currentRoom = "#" + item.id;
       item.setAttribute('class', 'highlight');
+
+      clearChatDisplay();
+      let room = event.target;
+      socket.emit("join room", room.textContent);
 
       event.preventDefault();
       return false;
