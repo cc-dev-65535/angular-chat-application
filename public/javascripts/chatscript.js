@@ -26,7 +26,7 @@ init();
 /* Setup emoji picker */
 document.querySelector('#emojiIcon').addEventListener("click", (event) => {
   const emojiPickerNode = document.querySelector('#emojiPicker');
-  if (emojiPickerNode.getAttribute("class") == "hidden") {
+  if (emojiPickerNode.getAttribute("class") === "hidden") {
     emojiPickerNode.setAttribute("class", "");
   } else {
     emojiPickerNode.setAttribute("class", "hidden");
@@ -52,7 +52,7 @@ document.querySelector('#chatInput').addEventListener("submit", (event) => {
 });
 
 document.querySelector("#inputBox").addEventListener("keydown", (event) => {
-  if (event.key == "Enter") {
+  if (event.key === "Enter") {
     sendMessage();
     event.preventDefault();
   }
@@ -61,11 +61,9 @@ document.querySelector("#inputBox").addEventListener("keydown", (event) => {
 // Handler for setting handle name
 document.querySelector('#nameInput').addEventListener("submit", (event) => {
   let inputBox = document.querySelector('#nameInputBox');
-  if(inputBox.value != "") {
-    socket.emit("set name", inputBox.value);
-    setNameLabel(inputBox.value);
-    inputBox.value = "";
-  }
+  socket.emit("set name", inputBox.value);
+  setNameLabel(inputBox.value);
+  inputBox.value = "";
   event.preventDefault();
 });
 

@@ -5,12 +5,11 @@ const userModel = mongoose.model('Users');
 /* Username-realted functions */
 async function setUsername(id, name) {
   try {
-    const session = await userModel.startSession();
+    const session = await mongoose.connection.startSession();
     await session.withTransaction(async () => {
       const userDoc = await userModel.findOne({socketId: id}).session(session);
-      if (userDoc == null) {
-        return await userModel.create({ socketId: id,
-                                        userName: name });
+      if (userDoc === null) {
+        return await userModel.create([{ socketId: id, userName: name }], { session: session });
       }
       userDoc.userName = name;
       await userDoc.save();
@@ -32,9 +31,9 @@ async function removeUsername(id) {
 /* Find socket username from databse and send message to all other sockets in specified room*/
 async function sendMessage(io, socket, room, msg) {
   try {
-    const session = await chatModel.startSession();
+    const session = await mongoose.connection.startSession();
     await session.withTransaction(async () => {
-      const userDoc = await userModel.findOne({socketId: socket.id}).select('userName');
+      const userDoc = await userModel.findOne({socketId: socket.id}).select('userName').session(session);
       const sendMsg = `${userDoc.userName}: ${msg}`;
       const chatDoc = await chatModel.findOne({room: room}).session(session);
       const messageObj = {
@@ -54,9 +53,12 @@ async function sendMessage(io, socket, room, msg) {
 /* Emit all saved room messages to client socket after a room join */
 async function getRoomMessages(io, socket, room) {
   try {
-    const session = await chatModel.startSession();
+    const session = await mongoose.connection.startSession();
     await session.withTransaction(async () => {
-      const userDoc = await userModel.findOne({socketId: socket.id}).select('userName');
+      const userDoc = await userModel.findOne({socketId: socket.id}).select('userName').session(session);
+      if (userDoc === null) {
+        return;
+      }
       const joinMsg = `${userDoc.userName} joined ${room}`;
       const chatDoc = await chatModel.findOne({room: room}).session(session);
       const msgArray = chatDoc.messages;

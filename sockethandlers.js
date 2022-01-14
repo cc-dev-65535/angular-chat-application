@@ -18,7 +18,7 @@ module.exports = (io) => {
 
   const leavePreviousRoom = function(socket) {
     for (let item of socket.rooms) {
-      if (item != socket.id) {
+      if (item !== socket.id) {
         socket.leave(item);
       }
     }
@@ -33,6 +33,9 @@ module.exports = (io) => {
 
   const nameHandler = function(name) {
     const socket = this;
+    if (name === "") {
+      return;
+    }
     return db.setUsername(socket.id, name);
   };
 
