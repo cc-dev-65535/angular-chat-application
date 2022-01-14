@@ -1,9 +1,6 @@
 const mongoose = require('mongoose');
 const readLine = require ('readline');
 
-//const dbURI = 'mongodb://localhost/ChatSite';
-//mongoose.connect(dbURI, {useNewUrlParser: true});
-
 const dbURI = process.env.MONGODB_URI;
 try {
   mongoose.connect(

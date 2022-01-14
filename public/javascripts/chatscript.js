@@ -88,11 +88,12 @@ function setNameLabel(name) {
 }
 
 // Set initial handle name and room and add room links
-async function init() {
-  await socket.emit('set name', 'no name');
-  setNameLabel("no name")
+function init() {
+  socket.emit('init');
+  //socket.emit('set name', 'unnamed');
+  setNameLabel("unnamed");
 
-  await socket.emit('join room', "#random");
+  //socket.emit('join room', "#random");
   currentRoom = "#roomFour";
   const node = document.querySelector(currentRoom);
   node.setAttribute('class', 'highlight');

@@ -34,13 +34,14 @@ server.on('listening', onListening);
  *  WebSockets setup
  */
 const io = new Server(server);
-const { messageHandler, joinHandler, nameHandler, disconnectHandler} = require("../sockethandlers")(io);
+const { dbInit, messageHandler, joinHandler, nameHandler, disconnectHandler } = require("../sockethandlers")(io);
 
 const onConnection = (socket) => {
   socket.on('message', messageHandler);
   socket.on('join room', joinHandler);
   socket.on('set name', nameHandler);
   socket.on('disconnect', disconnectHandler);
+  socket.on('init', dbInit);
 };
 
 io.on('connection', onConnection);

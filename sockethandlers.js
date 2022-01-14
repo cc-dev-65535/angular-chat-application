@@ -2,6 +2,12 @@ const db = require('./db/db_controller');
 
 module.exports = (io) => {
 
+  const dbInit = async function() {
+    const socket = this;
+    await nameHandler.bind(socket, "unnamed")();
+    await joinHandler.bind(socket, "#random")();
+  };
+
   const messageHandler = function(msg) {
     const socket = this;
     const temp = socket.rooms.values();
@@ -22,12 +28,12 @@ module.exports = (io) => {
     const socket = this;
     leavePreviousRoom(socket);
     socket.join(room);
-    db.getRoomMessages(io, socket, room);
+    return db.getRoomMessages(io, socket, room);
   };
 
   const nameHandler = function(name) {
     const socket = this;
-    db.setUsername(socket.id, name);
+    return db.setUsername(socket.id, name);
   };
 
   const disconnectHandler = function() {
@@ -36,6 +42,7 @@ module.exports = (io) => {
   };
 
   return {
+    dbInit,
     messageHandler,
     joinHandler,
     nameHandler,
