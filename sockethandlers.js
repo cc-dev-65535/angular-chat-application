@@ -8,11 +8,15 @@ module.exports = (io) => {
     await joinHandler.bind(socket, "#random")();
   };
 
-  const messageHandler = function(msg) {
-    const socket = this;
+  const getRoom = function(socket) {
     const temp = socket.rooms.values();
     temp.next();
-    const room = temp.next().value;
+    return temp.next().value;
+  }
+
+  const messageHandler = function(msg) {
+    const socket = this;
+    const room = getRoom(socket);
     db.sendMessage(io, socket, room, msg);
   };
 
@@ -26,6 +30,10 @@ module.exports = (io) => {
 
   const joinHandler = function(room) {
     const socket = this;
+    const prevRoom = getRoom(socket);
+    if (prevRoom === room) {
+      return;
+    }
     leavePreviousRoom(socket);
     socket.join(room);
     return db.getRoomMessages(io, socket, room);

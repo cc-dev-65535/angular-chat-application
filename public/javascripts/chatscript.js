@@ -106,13 +106,17 @@ function addRoomLinks() {
   let list = document.querySelectorAll('#roomsList button');
   for (let item of list) {
     item.addEventListener("click", (event) => {
+      const joinRoom = "#" + item.id;
+      if (currentRoom === joinRoom) {
+        return;
+      }
       let prevNode = document.querySelector(currentRoom);
       prevNode.setAttribute('class', '');
-      currentRoom = "#" + item.id;
+      currentRoom = joinRoom;
       item.setAttribute('class', 'highlight');
 
       clearChatDisplay();
-      let room = event.target;
+      const room = event.target;
       socket.emit("join room", room.textContent);
 
       event.preventDefault();
