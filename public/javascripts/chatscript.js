@@ -82,9 +82,9 @@ function sendMessage() {
 }
 
 function clearChatDisplay() {
-  let childNodes = document.querySelector('#chatDisplay').children;
-  for (let i = childNodes.length; i > 0; i--) {
-    childNodes[i-1].remove();
+  let node = document.querySelector('#chatDisplay');
+  while (node.firstChild) {
+    node.removeChild(node.firstChild);
   }
 }
 
