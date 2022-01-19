@@ -1,0 +1,115 @@
+body {
+  font: 14px monospace, "Lucida Grande", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+button {
+  border: 1px solid #ccc;
+  background-color: #999;
+  border-radius: 0.5em;
+  padding: 10px;
+  font-weight: bold;
+  color: #fff;
+  display: block;
+}
+
+button:hover {
+  background-color: #333;
+  cursor: pointer;
+}
+
+.highlight {
+  background-color: #333 !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.layoutContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.chatDisplay {
+  height: 500px;
+  border: 1px solid #ccc;
+  margin-top: 15px;
+  border-radius: 2px;
+  background-color: rgba(192, 128, 63, 0.05);
+  overflow-y: auto;
+}
+
+.chatDisplay div {
+  overflow-wrap: anywhere;
+  border: 1px solid #ccc;
+}
+
+.inputContainer {
+  display: flex;
+}
+
+#inputBox {
+  height: 150px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  background-color: rgba(192, 128, 63, 0.05);
+  resize: none;
+}
+
+#inputBox:focus {
+  outline: none;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.inputContainer .controls button {
+  margin-left: 3px;
+}
+
+#emojiIcon {
+  margin-left: 3px;
+}
+
+#emojiIcon:hover {
+  cursor: pointer;
+}
+
+#emojiContainer {
+  position: relative;
+}
+
+#emojiPicker {
+  position: absolute;
+  top: -370px;
+  left: 35px;
+}
+
+.nameContainer {
+  display: flex;
+}
+
+#nameInputBox {
+  padding: 1px;
+}
+
+.nameContainer button {
+  padding: 3px;
+}
+
+.nameContainer label:last-child {
+  margin-left: 5px;
+  color: green;
+}

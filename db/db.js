@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const readLine = require ('readline');
 
-const dbURI = process.env.MONGODB_URI;
+const dbURI = "mongodb+srv://mongouser:imgmongouser@cluster0.zeken.mongodb.net/ChatSite?retryWrites=true&w=majority"
+//const dbURI = process.env.MONGODB_URI;
 try {
   mongoose.connect(
     dbURI,
