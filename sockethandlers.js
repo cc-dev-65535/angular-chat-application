@@ -5,8 +5,13 @@ module.exports = (io) => {
   const dbInit = async function() {
     const socket = this;
     await nameHandler.bind(socket, "unnamed")();
-    await joinHandler.bind(socket, "#random")();
+    //await joinHandler.bind(socket, "")();
   };
+
+  const notInit = function() {
+    const socket = this;
+    return db.checkInit(socket);
+  }
 
   const getRoom = function(socket) {
     const temp = socket.rooms.values();
@@ -28,14 +33,18 @@ module.exports = (io) => {
     }
   };
 
-  const joinHandler = function(room) {
+  const joinHandler = async function(room) {
     const socket = this;
-    const prevRoom = getRoom(socket);
-    if (prevRoom === room) {
-      return;
+    const init = await notInit.bind(socket)();
+    if (init) {
+      await dbInit.bind(socket)();
     }
+    const prevRoom = getRoom(socket);
     leavePreviousRoom(socket);
     socket.join(room);
+    if (!(/#random|#funny|#animals|#food/.test(room)) || prevRoom === room) {
+      return;
+    }
     return db.getRoomMessages(io, socket, room);
   };
 

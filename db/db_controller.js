@@ -2,6 +2,15 @@ const mongoose = require('mongoose');
 const chatModel = mongoose.model('Chats');
 const userModel = mongoose.model('Users');
 
+async function checkInit(socket) {
+  try {
+    const userDoc = await userModel.findOne({socketId: socket.id});
+    return (userDoc === null);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 /* Username-realted functions */
 async function setUsername(id, name) {
   try {
@@ -76,6 +85,7 @@ async function getRoomMessages(io, socket, room) {
 }
 
 module.exports = {
+  checkInit,
   setUsername,
   removeUsername,
   sendMessage,

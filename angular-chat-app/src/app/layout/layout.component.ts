@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LayoutComponent implements OnInit {
 
+  //@ViewChildren('link') links: QueryList<ElementRef> | null = null;
+
   rooms : Array<String> = ["animals", "funny", "food", "random"];
 
   constructor() {

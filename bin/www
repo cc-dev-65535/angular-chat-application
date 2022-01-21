@@ -13,7 +13,7 @@ const { Server } = require("socket.io");
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3400');
+var port = normalizePort(process.env.PORT || '3500');
 app.set('port', port);
 
 /**
@@ -37,11 +37,13 @@ const io = new Server(server);
 const { dbInit, messageHandler, joinHandler, nameHandler, disconnectHandler } = require("../sockethandlers")(io);
 
 const onConnection = (socket) => {
+  //dbInit.bind(socket)();
+  //let notInit = true;
   socket.on('message', messageHandler);
   socket.on('join room', joinHandler);
   socket.on('set name', nameHandler);
   socket.on('disconnect', disconnectHandler);
-  socket.on('init', dbInit);
+  //socket.on('init', dbInit);
 };
 
 io.on('connection', onConnection);

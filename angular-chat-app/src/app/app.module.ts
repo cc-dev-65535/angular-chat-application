@@ -1,6 +1,7 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { ChatComponent } from './chat/chat.component';
 import { LayoutComponent } from './layout/layout.component';
@@ -36,7 +37,8 @@ import { SocketService } from './socket.service';
           path: 'room/random',
           component: ChatComponent
         }
-    ])
+    ]),
+    ReactiveFormsModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [],

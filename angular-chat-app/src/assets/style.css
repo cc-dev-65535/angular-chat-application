@@ -50,10 +50,12 @@ button:hover {
 
 .chatDisplay div {
   overflow-wrap: anywhere;
+  white-space: pre-wrap;
   border: 1px solid #ccc;
 }
 
 .inputContainer {
+  margin-top: 10px;
   display: flex;
 }
 
@@ -84,6 +86,7 @@ button:hover {
 }
 
 #emojiIcon:hover {
+  opacity: 0.60;
   cursor: pointer;
 }
 
@@ -98,18 +101,26 @@ button:hover {
 }
 
 .nameContainer {
+  margin-top: 10px;
   display: flex;
 }
 
+.nameContainer label {
+  align-self: center;
+}
+
 #nameInputBox {
-  padding: 1px;
+  margin-left: 2px;
+  padding: 2px;
 }
 
 .nameContainer button {
-  padding: 3px;
+  margin-left: 3px;
+  border-radius: 0;
+  padding: 2px;
 }
 
-.nameContainer label:last-child {
-  margin-left: 5px;
+#nameLabel {
+  margin-top: 5px;
   color: green;
 }

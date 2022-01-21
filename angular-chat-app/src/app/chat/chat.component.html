@@ -1,17 +1,17 @@
-<div class="chatDisplay col-10"></div>
+<div class="chatDisplay col-10" #cd></div>
 <div class="inputContainer">
-  <textarea id="inputBox" class="col-6"></textarea>
+  <textarea id="inputBox" class="col-6" [formControl]="textBox" (keydown)="onEnterSubmit($event)" #ib></textarea>
   <div class="controls">
     <div id="emojiContainer">
-      <i id="emojiIcon" class="far fa-grin-alt fa-2x"></i>
-      <emoji-picker id="emojiPicker" class="hidden"></emoji-picker>
+      <i id="emojiIcon" class="far fa-grin-alt fa-2x" (click)="onIconClick()"></i>
+      <emoji-picker id="emojiPicker" (emoji-click)="onEmoji($event)" [class]="visible"></emoji-picker>
     </div>
-    <button>➥</button>
+    <button (click)="onSubmit()">➥</button>
   </div>
 </div>
 <div class="nameContainer">
-  <label>Handle Name:</label>
-  <input id="nameInputBox" type="text" required>
-  <button>Send</button>
-  <label>temp</label>
+  <label for="nameInputBox">Handle Name:</label>
+  <input id="nameInputBox" type="text" [formControl]="inputBox" required>
+  <button (click)="onNameChange()">Send</button>
 </div>
+<label id="nameLabel" [textContent]="nameLabel"></label>
