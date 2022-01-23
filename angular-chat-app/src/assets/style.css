@@ -112,6 +112,7 @@ button:hover {
 #nameInputBox {
   margin-left: 2px;
   padding: 2px;
+  width: 200px;
 }
 
 .nameContainer button {

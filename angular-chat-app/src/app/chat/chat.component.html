@@ -1,17 +1,26 @@
-<div class="chatDisplay col-10" #cd></div>
-<div class="inputContainer">
-  <textarea id="inputBox" class="col-6" [formControl]="textBox" (keydown)="onEnterSubmit($event)" #ib></textarea>
-  <div class="controls">
-    <div id="emojiContainer">
-      <i id="emojiIcon" class="far fa-grin-alt fa-2x" (click)="onIconClick()"></i>
-      <emoji-picker id="emojiPicker" (emoji-click)="onEmoji($event)" [class]="visible"></emoji-picker>
+<div class="layoutContainer">
+  <div class="chatDisplay col-11" #cd></div>
+  <div class="inputContainer">
+    <textarea id="inputBox" class="col-8" [formControl]="textBox" (keydown)="onEnterSubmit($event)" #ib></textarea>
+    <div class="controls">
+      <div id="emojiContainer">
+        <i id="emojiIcon" class="far fa-grin-alt fa-2x" (click)="onIconClick()"></i>
+        <emoji-picker id="emojiPicker" (emoji-click)="onEmoji($event)" [class]="visible"></emoji-picker>
+      </div>
+      <button (click)="onSubmit()">➥</button>
     </div>
-    <button (click)="onSubmit()">➥</button>
+  </div>
+  <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    Change Name
+  </button>
+  <div class="collapse" id="collapseExample">
+    <div class="nameInputContainer">
+      <div class="nameContainer">
+        <label for="nameInputBox">Handle Name:</label>
+        <input id="nameInputBox" type="text" [formControl]="inputBox" required>
+        <button (click)="onNameChange()">Send</button>
+      </div>
+      <p id="nameLabel" [textContent]="nameLabel"></p>
+    </div>
   </div>
 </div>
-<div class="nameContainer">
-  <label for="nameInputBox">Handle Name:</label>
-  <input id="nameInputBox" type="text" [formControl]="inputBox" required>
-  <button (click)="onNameChange()">Send</button>
-</div>
-<label id="nameLabel" [textContent]="nameLabel"></label>
