@@ -7,10 +7,10 @@
         <i id="emojiIcon" class="far fa-grin-alt fa-2x" (click)="onIconClick()"></i>
         <emoji-picker id="emojiPicker" (emoji-click)="onEmoji($event)" [class]="visible"></emoji-picker>
       </div>
-      <button (click)="onSubmit()">➥</button>
+      <button class="returnButton" (click)="onSubmit()">➥</button>
     </div>
   </div>
-  <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+  <button class="btn btn-primary nameChangeButton" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
     Change Name
   </button>
   <div class="collapse" id="collapseExample">
