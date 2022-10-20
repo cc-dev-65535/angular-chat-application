@@ -8,6 +8,6 @@ Real time chat web application implemented using Socket.IO libraries and Angular
 * Uses MongoDB/Mongoose for storage
 * Designed as an SPA using Angular framework
 * Uses Socket.IO libraries on the server and client
-* Hosted on Heroku
+* Hosted using Heroku
 
 ![Image](Untitled.png)
