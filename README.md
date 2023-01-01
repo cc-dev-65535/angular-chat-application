@@ -1,13 +1,6 @@
 # Chat Application
-Real time chat web application implemented using Socket.IO libraries and Angular framework  
+Real time chat web application created using Socket.IO libraries and Angular framework.  
 
-[Website Link](https://damp-hollows-32652.herokuapp.com)  
-[Git Repo](https://github.com/grepsedawkcat/chat_application)
-
-## Details
-* Uses MongoDB/Mongoose for storage
-* Designed as an SPA using Angular framework
-* Uses Socket.IO libraries on the server and client
-* Hosted using Heroku
+[Git Repo](https://github.com/grepsedawkcat/angular-chat-application)
 
 ![Image](Untitled.png)
